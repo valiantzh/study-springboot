@@ -1,0 +1,32 @@
+db: biu
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+    session:
+      cookie:
+        name: BIUSID
+
+spring:
+  profiles:
+    active: dev
+    include: druid,jdbc,mybatis
+    mybatis:
+      configuration:
+        cache-enabled: false
+        map-underscore-to-camel-case: true
+        use-generated-keys: true
+        default-executor-type: reuse
+        default-statement-timeout: 600
+  messages:
+    encoding: UTF-8
+---
+spring:
+  profiles: dev
+logging:
+  path: ./logs
+  level:
+    root:  ERROR
+    org.springframework:  ERROR
+    org.mybatis:  ERROR
+    com.study.demo: debug
