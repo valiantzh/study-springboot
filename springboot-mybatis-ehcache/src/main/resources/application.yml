@@ -1,0 +1,60 @@
+db: biu
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+    session:
+      cookie:
+        name: BIUSID
+
+spring:
+  profiles:
+    active: dev
+    include: druid,mybatis
+  messages:
+    encoding: UTF-8
+---
+spring:
+  profiles: dev
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/${db}?characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: Root@123456
+    type: com.alibaba.druid.pool.DruidDataSource
+    filters: stat
+    # 初始化大小，最小，最大
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    # 配置获取连接等待超时的时间
+    maxWait: 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    # 打开PSCache，并且指定每个连接上PSCache的大小
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+# MyBatis
+mybatis:
+  # 配置类型别名
+  typeAliasesPackage: com.study.demo.upms.model
+  # dao层接口
+  basePackage: com.study.demo.dao
+  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  mapperLocations: classpath:mybatis/mapper/*.xml
+  # 加载全局的配置文件
+  configLocation: classpath:mybatis/mybatis-config.xml
+
+logging:
+  path: ./logs
+  level:
+    root:  ERROR
+    org.springframework:  ERROR
+    org.mybatis:  ERROR
+    com.study.demo: debug
