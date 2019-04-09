@@ -1,0 +1,14 @@
+package ${package_name}.service.api;
+
+import com.study.common.base.BaseService;
+import ${package_name}.dao.model.${model};
+import ${package_name}.dao.model.${model}Example;
+
+/**
+ * ${model}Service接口
+ * @author valiantzh
+ * @version 1.0
+ */
+public interface ${model}Service extends BaseService<${model}, ${model}Example> {
+
+}

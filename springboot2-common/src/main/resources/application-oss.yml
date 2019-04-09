@@ -1,0 +1,18 @@
+#===OSS start===
+oss:
+  aliyun:
+    endpoint:oss-cn-shenzhen.aliyuncs.com
+    accessKeyId:test
+    accessKeySecret:test
+    bucketName:macro-oss
+    policy:
+      expire:300
+    maxSize:10
+    callback:http://localhost:8080/aliyun/oss/callback
+    dir:
+      prefix:mall/images/
+#===OSS end===
+
+
+
+
