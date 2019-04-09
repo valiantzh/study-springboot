@@ -1,0 +1,16 @@
+mybatis:
+  # 如果是放在src/main/java目录下 classpath: com/yourpackage/*/mappers/*Mapper.xml
+  # 如果是放在resource目录 classpath:/mappers/*Mapper.xml
+  mapper-locations: classpath:com/study/*/dao/*/mapper/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.study.*.dao.model
+  #pagehelper-spring-boot-starter 动配置分页插件的功能
+  configLocation:  #classpath:mybatis-config.xml
+  mapperScannerBasePackage: com.**.dao.*.mapper
+
+#pagehelper分页插件
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

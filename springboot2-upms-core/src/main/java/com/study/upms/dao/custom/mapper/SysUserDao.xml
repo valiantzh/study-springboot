@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.upms.dao.custom.mapper.SysUserDao">
+
+	<!-- 权限 -->
+	<resultMap id="SysPermResultMap" type="com.study.upms.dao.model.SysPerm">
+		<id column="pval" jdbcType="VARCHAR" property="pval" />
+		<result column="parent" jdbcType="VARCHAR" property="parent" />
+		<result column="pname" jdbcType="VARCHAR" property="pname" />
+		<result column="ptype" jdbcType="INTEGER" property="ptype" />
+		<result column="leaf" jdbcType="BIT" property="leaf" />
+		<result column="created" jdbcType="TIMESTAMP" property="created" />
+		<result column="updated" jdbcType="TIMESTAMP" property="updated" />
+	</resultMap>
+
+	<!-- 角色 -->
+	<resultMap id="SysRoleResultMap" type="com.study.upms.dao.model.SysRole">
+		<id column="rid" jdbcType="VARCHAR" property="rid" />
+		<result column="rname" jdbcType="VARCHAR" property="rname" />
+		<result column="rdesc" jdbcType="VARCHAR" property="rdesc" />
+		<result column="rval" jdbcType="VARCHAR" property="rval" />
+		<result column="created" jdbcType="TIMESTAMP" property="created" />
+		<result column="updated" jdbcType="TIMESTAMP" property="updated" />
+	</resultMap>
+
+	<!-- 权限字段 -->
+	<sql id="SysPerm_Column_List">
+		pval, parent, pname, ptype, leaf, created, updated
+	</sql>
+
+	<!-- 角色字段 -->
+	<sql id="SysRole_Column_List">
+		rid, rname, rdesc, rval, created, updated
+	</sql>
+
+	<!-- 根据用户获取所拥有的权限 -->
+	<select id="selectSysPermByUserId" parameterType="java.lang.String" resultMap="SysPermResultMap">
+		select
+			<include refid="SysPerm_Column_List" />
+		from sys_perm up where up.pval in (
+			select pval from sys_role_perm urp where urp.role_id in (
+				select uur.role_id role_id from sys_user_role uur where uur.user_id=#{userId,jdbcType=VARCHAR}
+			)
+		)order by up.pval asc
+	</select>
+
+	<!-- 根据用户id获取所属的角色 -->
+	<select id="selectSysRoleByUserId" parameterType="java.lang.String" resultMap="SysRoleResultMap">
+		select
+			<include refid="SysRole_Column_List" />
+		from sys_role ur where ur.rid in (
+			select uur.role_id from sys_user_role uur where uur.user_id=#{userId,jdbcType=VARCHAR}
+		)
+	</select>
+
+	<!-- 缓存 -->
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+
+</mapper>
